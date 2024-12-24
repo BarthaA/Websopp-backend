@@ -44,12 +44,25 @@ export class CarsService {
     }
   }
 
-  addToCart(carId) {
-    this.cart.push(carId);
-    return { message: `Car with ID ${carId} added to cart`, cart: this.cart };
-  }
+  async addToCart(carId: number) {
+      const car = await this.DB.cars.findUnique({ where: { id: carId } });
+      if (!car) {
+        throw new Error(`Car with ID ${carId} does not exist.`);
+      }
+      this.cart.push(car);
+      return { message: `Car with ID ${carId} added to cart`, cart: this.cart };
+    }
 
   getCart() {
     return this.cart;
+  }
+
+  async deleteFromCart(carId: number) {
+    try {
+      await this.cart.splice(carId)
+    }
+    catch {
+      return { message: 'Valami nemjo...😢' };
+    }
   }
 }

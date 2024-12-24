@@ -45,4 +45,9 @@ export class CarsController {
   getCart() {
     return this.carsService.getCart();
   }
+
+  @Delete('/cart/:id')
+  deleteFromCart(@Param('id') id:string) {
+    return this.carsService.deleteFromCart(+id);
+  }
 }
